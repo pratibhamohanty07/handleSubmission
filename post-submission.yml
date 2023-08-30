@@ -1,0 +1,303 @@
+openapi: 3.0.3
+info:
+  title: Submission API
+  description: |-
+     To manage the process of submitting information related Submissions
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://mocktarget.apigee.net
+  - url: http://mocktarget.apigee.net
+paths:
+  /postQuote:
+    post:
+      tags:
+        - Post Quote
+      summary: Post Quote
+      description: Post Quote
+      operationId: postQuote
+      requestBody:
+        description: Post Quote
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/submission'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostQuoteResponse'          
+        '405':
+          description: Invalid input
+components:
+  schemas:
+    submission:
+      $ref: '#/components/schemas/submissionItem'
+    submissionItem:
+      type: object
+      properties:
+        brokerSubmissionId:
+          type: string
+          pattern: "^[A-Za-z0-9_-]+$"
+          example: "202E555C-326F-4B83-87F6-9C7673D01B97"
+        brokerSubmissionVersion:
+          type: string
+          example: "1"
+        contact:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Test"
+            email:
+              type: string
+              example: "broker@willistowerswatson.com"
+            telephone:
+              type: string
+              example: "012345"
+            location:
+              type: string
+              example: "GB"
+        commentary:
+          type: string
+          example: "Test Comment"
+        correlationId:
+          type: string
+          example: "{D378FD2F-E54E-43EE-9D7D-E73BD896EAF3}"
+        contractSpecification:
+          type: array
+          items:
+            $ref: '#/components/schemas/contractSpecificationItem'
+        parties:
+          type: array
+          items:
+            $ref: '#/components/schemas/party'
+        exposures:
+          type: array
+          items:
+            $ref: '#/components/schemas/exposure'
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/claim'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/document'
+        submissionDate:
+          type: string
+          example: "2022-11-22"
+        claimsSummary:
+          type: object
+          properties:
+            eat_exposure_currency:
+              type: string
+              example: "GBP"
+            eat_exposure_number_of_claims:
+              type: string
+              example: "0"
+            eat_exposure_number_of_years_of_claims:
+              type: string
+              example: "0"
+            eat_exposure_total_outstanding_claim_amount:
+              type: string
+              example: "0"
+            eat_exposure_total_paid_claim_amount:
+              type: string
+              example: "0"
+    contractSpecificationItem:
+     type: object
+     properties:
+        references:
+          type: object
+          properties:
+            brokerCode:
+              type: string
+              example: "0801"
+            expiringContractReference:
+              type: string
+              example: "B0801123456"
+            contractReference:
+              type: string
+              example: "B080112345"
+            brokerPseudonym:
+              type: string
+              example: "B0801123456"
+        riskIndustryBreakdown:
+          type: object
+          properties:
+            level1:
+              type: string
+              example: "Automotive"
+            level2:
+              type: string
+              example: "Transportation Equipment"
+            level3:
+              type: string
+              example: "Motorcycles, bikes and equipment"
+        insuranceType:
+          type: string
+          example: "REINSURANCE"
+        leadFollow:
+          type: string
+          example: "LEAD"
+        product:
+          type: string
+          example: "PROPERTY"
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/sectionItem' 
+    sectionItem:
+     type: object
+     properties:
+        id:
+          type: string
+          example: "C1365"
+        description:
+          type: string
+          example: "Property Damage: £40m xs £10m"
+        inceptionDate:
+          type: string
+          example: "2022-03-31"
+        attachingToStructuredSolution:
+          type: object
+          properties:
+            structuredSolutionReference:
+              type: string
+              example: "B08011234567"
+        expiryDate:
+          type: string
+          example: "2023-03-30"
+        leader:
+          type: string
+          example: "Test Insurance Company"
+        leaderShare:
+          type: number
+          example: 17.0
+        layerType:
+          type: string
+          example: "EXCESS"
+        fullPremium:
+          type: object
+          properties:
+            currency:
+              $ref: '#/components/schemas/currency'
+        limit:
+          type: object
+          properties:
+            currency:
+              $ref: '#/components/schemas/currency'
+        deductible:
+          type: object
+          properties:
+            currency:
+              $ref: '#/components/schemas/currency'
+        excess:
+          type: object
+          properties:
+            currency:
+              $ref: '#/components/schemas/currency'
+        brokeragePercentage:
+          type: number
+          example: 25.0
+        ofWhole:
+          type: boolean
+          example: true
+        orderPercentage:
+          type: number
+          example: 100.0
+        referencing:
+          type: array
+          items:
+            $ref: '#/components/schemas/referencingItem'
+    currency:
+      type: object
+      properties:
+        currency:
+          type: string
+          example: "GBP"
+    referencingItem:
+      type: object
+      properties:
+        riskCode:
+          type: string
+          example: "riskCode"
+    party:
+      type: object
+      properties:
+        role:
+          type: string
+          example: "Insured"
+        legalEntityName:
+          type: string
+          example: "Test Insured"
+        dunsNumber:
+          type: string
+          example: "Test Duns Number"
+        domicileLocation:
+          type: string
+          example: "GB"
+        isPrimary:
+          type: boolean
+          example: true
+        brokerPartyId:
+          type: string
+          example: "1234"
+    exposure:
+      type: object
+      properties:
+        exposureId:
+          type: string
+          example: "1234"
+        exposureType:
+          type: string
+          example: "AUTO"
+    claim:
+      type: object
+      properties:
+        claimsId:
+          type: string
+          example: "1234"
+    document:
+      type: object
+      properties:
+        documentId:
+          type: string
+          example: "1234"
+        documentName:
+          type: string
+          example: "1234"
+        documentType:
+          type: string
+          example: "1234"
+    PostQuoteResponse:
+      type: object
+      properties:
+        brokerSubmissionId:
+          type: string
+          example: "0190C4DA-DA77-479A-8CC2-DD93B6283BAD"
+        brokerSubmissionVersion:
+          type: string
+          example: "1"
+        carrierSubmissionId:
+          type: string
+          example: "1234"
+        carrierSubmissionVersion:
+          type: string
+          example: "1234"
+        correlationId:
+          type: string
+          example: "{D378FD2F-E54E-43EE-9D7D-E73BD896EAF3}"
+    
